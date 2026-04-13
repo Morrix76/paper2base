@@ -8,6 +8,7 @@ function joinUrl(base: string, path: string): string {
 
 export function apiUrl(path: string): string {
   const base = String(import.meta.env.VITE_API_URL ?? '')
+  console.log('VITE_API_URL:', base, 'path:', path)
   return joinUrl(base, path)
 }
 

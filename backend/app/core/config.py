@@ -1,5 +1,4 @@
 import os
-from functools import lru_cache
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -14,7 +13,6 @@ def _parse_cors_origins(raw: str | None) -> list[str]:
     return [o.strip() for o in raw.split(",") if o.strip()]
 
 
-@lru_cache
 def get_settings() -> dict:
     return {
         "api_title": os.getenv("API_TITLE", "PDF-to-JSON API"),

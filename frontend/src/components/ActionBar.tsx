@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react'
 import * as XLSX from 'xlsx'
 import type { ExtractionData, SchemaMode } from '../types/extraction'
-import { useTranslation, type TFunction } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import i18n from '@/i18n'
+
+type Translate = ReturnType<typeof useTranslation>['t']
 
 type ActionBarProps = {
   data: ExtractionData | Record<string, unknown>
@@ -27,7 +29,7 @@ function triggerDownload(blob: Blob, filename: string) {
   URL.revokeObjectURL(url)
 }
 
-function buildRiepilogoSheet(t: TFunction, data: ExtractionData) {
+function buildRiepilogoSheet(t: Translate, data: ExtractionData) {
   const rows: (string | number)[][] = [
     [t('export.headers.field'), t('export.headers.value')],
     ['document_type', data.document_type ?? ''],
@@ -40,7 +42,7 @@ function buildRiepilogoSheet(t: TFunction, data: ExtractionData) {
   return XLSX.utils.aoa_to_sheet(rows)
 }
 
-function buildRigheSheet(t: TFunction, data: ExtractionData) {
+function buildRigheSheet(t: Translate, data: ExtractionData) {
   const header = [
     t('result.table.description'),
     t('result.table.quantity'),
@@ -55,7 +57,7 @@ function buildRigheSheet(t: TFunction, data: ExtractionData) {
   return XLSX.utils.aoa_to_sheet([header, ...body])
 }
 
-function buildGenericSheet(t: TFunction, data: Record<string, unknown>) {
+function buildGenericSheet(t: Translate, data: Record<string, unknown>) {
   const rows: string[][] = [[t('export.headers.field'), t('export.headers.value')]]
   for (const [k, v] of Object.entries(data)) {
     let cell = ''

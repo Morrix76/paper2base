@@ -290,7 +290,6 @@ function App() {
                           onClick={extract}
                           disabled={
                             !file ||
-                            !openaiApiKey.trim() ||
                             loading ||
                             (!useDefaultSchema &&
                               !customFields.some((f) => f.name.trim()))

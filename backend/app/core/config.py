@@ -27,4 +27,5 @@ def get_settings() -> dict:
         "resend_api_key": os.getenv("RESEND_API_KEY", ""),
         "resend_from": os.getenv("RESEND_FROM", ""),
         "app_url": os.getenv("APP_URL", "http://localhost:5173"),
+        "frontend_url": os.getenv("FRONTEND_URL", ""),
     }

@@ -62,13 +62,13 @@ def send_verification_email(email: str, token: str) -> None:
     settings = get_settings()
     api_key = (settings.get("resend_api_key") or "").strip()
     sender = (settings.get("resend_from") or "").strip()
+    frontend_url = (settings.get("frontend_url") or "").strip()
     app_url = (settings.get("app_url") or "").strip()
     if not api_key:
         raise RuntimeError("RESEND_API_KEY is missing")
     if not sender:
         raise RuntimeError("RESEND_FROM is missing")
-    if not app_url:
-        app_url = "http://localhost:5173"
+    base_url = frontend_url or app_url or "http://localhost:5173"
 
     import resend  # local import to keep import-time side effects minimal
 
@@ -78,7 +78,7 @@ def send_verification_email(email: str, token: str) -> None:
             "from": sender,
             "to": email,
             "subject": "Verifica il tuo account Paper2Base / Verify your Paper2Base account",
-            "html": _email_html(app_url, token),
+            "html": _email_html(base_url, token),
         }
     )
 

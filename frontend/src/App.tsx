@@ -267,7 +267,7 @@ function App() {
             <LandingPage />
           )
         ) : success ? (
-          <Card className="mx-auto w-full max-w-2xl rounded-2xl border border-gray-100 shadow-xs">
+          <Card className="mx-auto w-full max-w-4xl rounded-2xl border border-gray-100 shadow-xs">
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">

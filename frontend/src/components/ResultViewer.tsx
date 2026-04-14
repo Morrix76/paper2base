@@ -78,16 +78,16 @@ function LineItemsTable({ items }: { items: LineItem[] }) {
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-      <table className="w-full table-fixed divide-y divide-gray-200 text-left text-sm">
+      <table className="min-w-full divide-y divide-gray-200 text-left text-sm">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-3 py-2.5 font-semibold text-gray-700">
+            <th className="w-1/2 px-3 py-2.5 font-semibold text-gray-700">
               {t('result.table.description')}
             </th>
-            <th className="w-24 px-3 py-2.5 text-right font-semibold text-gray-700">
+            <th className="w-1/4 px-3 py-2.5 text-right font-semibold text-gray-700">
               {t('result.table.quantity')}
             </th>
-            <th className="w-32 px-3 py-2.5 text-right font-semibold text-gray-700">
+            <th className="w-1/4 px-3 py-2.5 text-right font-semibold text-gray-700">
               {t('result.table.unitPrice')}
             </th>
           </tr>
@@ -95,13 +95,13 @@ function LineItemsTable({ items }: { items: LineItem[] }) {
         <tbody className="divide-y divide-gray-100">
           {items.map((row, i) => (
             <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              <td className="px-3 py-2.5 text-gray-900">
+              <td className="w-1/2 px-3 py-2.5 text-gray-900">
                 {row.description ?? t('result.values.dash')}
               </td>
-              <td className="w-24 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
+              <td className="w-1/4 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
                 {formatQty(row.quantity ?? undefined)}
               </td>
-              <td className="w-32 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
+              <td className="w-1/4 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
                 {formatMoney(row.unit_price ?? undefined)}
               </td>
             </tr>

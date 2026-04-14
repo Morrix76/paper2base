@@ -233,18 +233,32 @@ function App() {
         {isPrivacyRoute ? (
           <PrivacyPage />
         ) : !isAuthenticated ? (
-          isLoadingUser ? (
-            <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
-              <CardContent className="py-10">
-                <div className="flex items-center justify-center">
-                  <Spinner />
-                </div>
-              </CardContent>
-            </Card>
+          path === '/' ? (
+            <LandingPage />
           ) : isLoginRoute ? (
-            <LoginPage onGoRegister={() => (window.location.href = '/register')} />
+            isLoadingUser ? (
+              <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
+                <CardContent className="py-10">
+                  <div className="flex items-center justify-center">
+                    <Spinner />
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <LoginPage onGoRegister={() => (window.location.href = '/register')} />
+            )
           ) : isRegisterRoute ? (
-            <RegisterPage onGoLogin={() => (window.location.href = '/login')} />
+            isLoadingUser ? (
+              <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
+                <CardContent className="py-10">
+                  <div className="flex items-center justify-center">
+                    <Spinner />
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <RegisterPage onGoLogin={() => (window.location.href = '/login')} />
+            )
           ) : (
             <LandingPage />
           )

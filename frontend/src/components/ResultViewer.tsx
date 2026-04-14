@@ -77,32 +77,37 @@ function LineItemsTable({ items }: { items: LineItem[] }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-      <div className="flex items-center gap-3 bg-gray-50 px-3 py-2 text-sm font-semibold text-gray-700">
-        <div className="flex-1">{t('result.table.description')}</div>
-        <div className="w-24 text-right">{t('result.table.quantity')}</div>
-        <div className="w-24 text-right">{t('result.table.unitPrice')}</div>
-      </div>
-      <div className="divide-y divide-gray-100">
-        {items.map((row, i) => (
-          <div
-            key={i}
-            className={`flex items-start gap-3 px-3 py-2 text-sm ${
-              i % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-            }`}
-          >
-            <div className="min-w-0 flex-1 text-gray-900">
-              {row.description ?? t('result.values.dash')}
-            </div>
-            <div className="w-24 whitespace-nowrap text-right text-gray-800">
-              {formatQty(row.quantity ?? undefined)}
-            </div>
-            <div className="w-24 whitespace-nowrap text-right text-gray-800">
-              {formatMoney(row.unit_price ?? undefined)}
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+      <table className="w-full table-fixed divide-y divide-gray-200 text-left text-sm">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-3 py-2.5 font-semibold text-gray-700">
+              {t('result.table.description')}
+            </th>
+            <th className="w-24 px-3 py-2.5 text-right font-semibold text-gray-700">
+              {t('result.table.quantity')}
+            </th>
+            <th className="w-32 px-3 py-2.5 text-right font-semibold text-gray-700">
+              {t('result.table.unitPrice')}
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100">
+          {items.map((row, i) => (
+            <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <td className="px-3 py-2.5 text-gray-900">
+                {row.description ?? t('result.values.dash')}
+              </td>
+              <td className="w-24 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
+                {formatQty(row.quantity ?? undefined)}
+              </td>
+              <td className="w-32 whitespace-nowrap px-3 py-2.5 text-right text-gray-800">
+                {formatMoney(row.unit_price ?? undefined)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

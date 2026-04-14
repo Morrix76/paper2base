@@ -142,6 +142,9 @@ function App() {
       window.location.pathname.startsWith('/privacy/'))
 
   const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+  if (typeof window !== 'undefined') {
+    console.log('CURRENT PATH:', window.location.pathname)
+  }
   const isLoginRoute = path === '/login' || path.startsWith('/login/')
   const isRegisterRoute = path === '/register' || path.startsWith('/register/')
 

@@ -113,7 +113,7 @@ export const en = {
     unexpected: 'An unexpected error occurred.',
   },
   footer: {
-    copyright: 'Paper2Base © 2025',
+    copyright: 'Paper2Base © 2026',
   },
   download: {
     defaultBasename: 'extraction',

@@ -113,7 +113,7 @@ export const it = {
     unexpected: 'Si è verificato un errore imprevisto.',
   },
   footer: {
-    copyright: 'Paper2Base © 2025',
+    copyright: 'Paper2Base © 2026',
   },
   download: {
     defaultBasename: 'estrazione',

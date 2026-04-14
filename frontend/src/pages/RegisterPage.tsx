@@ -11,6 +11,7 @@ export function RegisterPage({ onGoLogin }: { onGoLogin: () => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -76,10 +77,35 @@ export function RegisterPage({ onGoLogin }: { onGoLogin: () => void }) {
               <p className="font-medium leading-relaxed">{error}</p>
             </div>
           )}
+          <label className="flex items-start gap-3 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={acceptedPrivacy}
+              onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+              disabled={loading}
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-violet-500"
+              required
+            />
+            <span>
+              Ho letto e acconsento alla{' '}
+              <a
+                href="/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-gray-700 underline-offset-2 hover:text-gray-900 hover:underline"
+              >
+                Privacy Policy
+              </a>
+            </span>
+          </label>
           <Button
             type="submit"
             disabled={
-              loading || !email.trim() || !password.trim() || password !== confirmPassword
+              loading ||
+              !email.trim() ||
+              !password.trim() ||
+              password !== confirmPassword ||
+              !acceptedPrivacy
             }
             className="w-full rounded-lg bg-gray-900 py-3 text-white hover:bg-gray-700"
           >

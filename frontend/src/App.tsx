@@ -18,6 +18,7 @@ import { useAuth } from '@/context/AuthContext'
 import { LoginPage } from '@/pages/LoginPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { apiUrl } from '@/utils/apiUrl'
+import { PrivacyPage } from '@/pages/PrivacyPage'
 
 type ViewState =
   | { status: 'idle' }
@@ -134,6 +135,11 @@ function App() {
       ? JSON.stringify(view.result.data, null, 2)
       : ''
 
+  const isPrivacyRoute =
+    typeof window !== 'undefined' &&
+    (window.location.pathname === '/privacy' ||
+      window.location.pathname.startsWith('/privacy/'))
+
   return (
     <div className="relative min-h-screen">
       <div className="fixed inset-x-0 top-0 z-40 h-14 border-b border-gray-100 bg-white">
@@ -208,7 +214,9 @@ function App() {
           </p>
         </header>
 
-        {!isAuthenticated ? (
+        {isPrivacyRoute ? (
+          <PrivacyPage />
+        ) : !isAuthenticated ? (
           isLoadingUser ? (
             <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
               <CardContent className="py-10">
@@ -324,7 +332,15 @@ function App() {
         )}
 
         <footer className="mt-8 text-center text-sm text-gray-400">
-          {t('footer.copyright')}
+          <div>{t('footer.copyright')}</div>
+          <div className="mt-1">
+            <a
+              href="/privacy"
+              className="font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
+            >
+              Privacy Policy
+            </a>
+          </div>
         </footer>
       </main>
     </div>

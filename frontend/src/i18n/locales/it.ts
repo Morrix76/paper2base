@@ -124,30 +124,31 @@ export const it = {
   },
   landing: {
     hero: {
-      title: 'Trasforma documenti in dati strutturati in secondi',
+      badge: '✨ 3 documenti gratuiti — nessuna carta di credito',
+      title: 'Trasforma documenti in dati strutturati.',
       subtitle:
         "Carica PDF, Word, Excel o immagini — ottieni JSON, Excel o CSV pronti all'uso",
-      cta: 'Inizia gratis — 3 documenti inclusi',
+      cta: 'Inizia gratis',
     },
     howItWorks: {
       kicker: 'Come funziona',
-      title: 'Tre passaggi, zero frizioni',
+      title: 'Come funziona',
       step1: 'Carica il documento',
       step2: "L'AI estrae i dati",
       step3: 'Scarica o integra',
     },
     formats: {
       kicker: 'Formati supportati',
-      title: 'Funziona con i tuoi file',
+      title: 'Formati supportati',
       pdf: 'PDF',
-      word: 'Word (.docx)',
-      excel: 'Excel (.xlsx)',
+      word: 'Word',
+      excel: 'Excel',
       images: 'JPG/PNG',
       handwritten: 'Scritto a mano',
     },
     pricing: {
       kicker: 'Pricing',
-      title: 'Hai bisogno di più documenti?',
+      title: 'Pricing',
       body: 'Vuoi più documenti o un piano business? Scrivici a',
     },
   },

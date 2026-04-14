@@ -124,30 +124,31 @@ export const en = {
   },
   landing: {
     hero: {
-      title: 'Turn documents into structured data in seconds',
+      badge: '✨ 3 free documents — no credit card',
+      title: 'Turn documents into structured data.',
       subtitle:
         'Upload PDF, Word, Excel, or images — get JSON, Excel, or CSV ready to use',
-      cta: 'Start free — 3 documents included',
+      cta: 'Start free',
     },
     howItWorks: {
       kicker: 'How it works',
-      title: 'Three steps, no friction',
+      title: 'How it works',
       step1: 'Upload the document',
       step2: 'AI extracts the data',
       step3: 'Download or integrate',
     },
     formats: {
       kicker: 'Supported formats',
-      title: 'Works with your files',
+      title: 'Supported formats',
       pdf: 'PDF',
-      word: 'Word (.docx)',
-      excel: 'Excel (.xlsx)',
+      word: 'Word',
+      excel: 'Excel',
       images: 'JPG/PNG',
       handwritten: 'Handwritten',
     },
     pricing: {
       kicker: 'Pricing',
-      title: 'Need more documents?',
+      title: 'Pricing',
       body: 'Want more documents or a business plan? Email us at',
     },
   },

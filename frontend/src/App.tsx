@@ -62,7 +62,6 @@ function downloadBasename(filename: string | null): string {
 function App() {
   const { t, i18n } = useTranslation()
   const { token, user, isAuthenticated, isLoadingUser, logout, refreshMe } = useAuth()
-  const [authView, setAuthView] = useState<'login' | 'register'>('login')
   const [file, setFile] = useState<File | null>(null)
   const [webhookUrl, setWebhookUrl] = useState('')
   const [useDefaultSchema, setUseDefaultSchema] = useState(true)

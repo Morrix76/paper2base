@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -7,6 +8,7 @@ import { useAuth } from '@/context/AuthContext'
 import { parseApiError } from '@/utils/apiError'
 
 export function RegisterPage({ onGoLogin }: { onGoLogin: () => void }) {
+  const { t } = useTranslation()
   const { register } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,6 +40,9 @@ export function RegisterPage({ onGoLogin }: { onGoLogin: () => void }) {
         <CardTitle className="text-base">Registrazione</CardTitle>
       </CardHeader>
       <CardContent>
+        <div className="mb-4 rounded-lg bg-indigo-50 px-4 py-2 text-center text-sm font-medium text-indigo-600">
+          🎁 {t('auth.register.freeBanner')}
+        </div>
         <form onSubmit={submit} className="space-y-4">
           <div className="space-y-1">
             <Label htmlFor="email">Email</Label>

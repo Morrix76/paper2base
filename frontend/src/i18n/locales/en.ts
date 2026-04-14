@@ -4,6 +4,8 @@ export const en = {
       it: 'IT',
       en: 'EN',
     },
+    documentsRemaining: 'documents remaining',
+    creditsDepletedContact: 'Credits depleted — contact us',
   },
   hero: {
     title: 'Turn documents into structured data.',
@@ -114,6 +116,40 @@ export const en = {
   },
   footer: {
     copyright: 'Paper2Base © 2026',
+  },
+  auth: {
+    register: {
+      freeBanner: 'Start free with 3 documents — no credit card required',
+    },
+  },
+  landing: {
+    hero: {
+      title: 'Turn documents into structured data in seconds',
+      subtitle:
+        'Upload PDF, Word, Excel, or images — get JSON, Excel, or CSV ready to use',
+      cta: 'Start free — 3 documents included',
+    },
+    howItWorks: {
+      kicker: 'How it works',
+      title: 'Three steps, no friction',
+      step1: 'Upload the document',
+      step2: 'AI extracts the data',
+      step3: 'Download or integrate',
+    },
+    formats: {
+      kicker: 'Supported formats',
+      title: 'Works with your files',
+      pdf: 'PDF',
+      word: 'Word (.docx)',
+      excel: 'Excel (.xlsx)',
+      images: 'JPG/PNG',
+      handwritten: 'Handwritten',
+    },
+    pricing: {
+      kicker: 'Pricing',
+      title: 'Need more documents?',
+      body: 'Want more documents or a business plan? Email us at',
+    },
   },
   download: {
     defaultBasename: 'extraction',

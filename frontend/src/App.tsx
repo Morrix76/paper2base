@@ -19,6 +19,7 @@ import { LoginPage } from '@/pages/LoginPage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { apiUrl } from '@/utils/apiUrl'
 import { PrivacyPage } from '@/pages/PrivacyPage'
+import { LandingPage } from '@/pages/LandingPage'
 
 type ViewState =
   | { status: 'idle' }
@@ -140,6 +141,10 @@ function App() {
     (window.location.pathname === '/privacy' ||
       window.location.pathname.startsWith('/privacy/'))
 
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+  const isLoginRoute = path === '/login' || path.startsWith('/login/')
+  const isRegisterRoute = path === '/register' || path.startsWith('/register/')
+
   return (
     <div className="relative min-h-screen">
       <div className="fixed inset-x-0 top-0 z-40 h-14 border-b border-gray-100 bg-white">
@@ -152,9 +157,20 @@ function App() {
             <div className="absolute left-4 top-1/2 hidden -translate-y-1/2 items-center gap-3 text-sm text-gray-500 sm:flex">
               <span className="font-medium text-gray-900">{user.email}</span>
               <span className="text-gray-400">·</span>
-              <span>
-                Crediti: <span className="font-semibold text-gray-900">{user.credits}</span>
-              </span>
+              {user.credits > 0 ? (
+                <span className="text-gray-500">
+                  📄{' '}
+                  <span className="font-semibold text-gray-900">{user.credits}</span>{' '}
+                  {t('nav.documentsRemaining')}
+                </span>
+              ) : (
+                <a
+                  className="font-medium text-red-600 underline-offset-2 hover:text-red-700 hover:underline"
+                  href="mailto:iltuobrand@outlook.it"
+                >
+                  {t('nav.creditsDepletedContact')}
+                </a>
+              )}
               <button
                 type="button"
                 onClick={logout}
@@ -225,10 +241,12 @@ function App() {
                 </div>
               </CardContent>
             </Card>
-          ) : authView === 'login' ? (
-            <LoginPage onGoRegister={() => setAuthView('register')} />
+          ) : isLoginRoute ? (
+            <LoginPage onGoRegister={() => (window.location.href = '/register')} />
+          ) : isRegisterRoute ? (
+            <RegisterPage onGoLogin={() => (window.location.href = '/login')} />
           ) : (
-            <RegisterPage onGoLogin={() => setAuthView('login')} />
+            <LandingPage />
           )
         ) : success ? (
           <Card className="mx-auto w-full max-w-2xl rounded-2xl border border-gray-100 shadow-xs">

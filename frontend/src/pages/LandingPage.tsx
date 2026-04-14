@@ -68,8 +68,8 @@ export function LandingPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12 text-center">
       <section>
-        <div className="mx-auto w-fit inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100">
-          {t('landing.hero.badge')}
+        <div className="mx-auto w-fit rounded-full bg-green-50 px-4 py-2 text-sm font-medium text-green-700">
+          ✨ 3 documenti gratuiti — nessuna carta di credito
         </div>
         <h1 className="mt-5 min-h-[100px] text-4xl font-black leading-tight tracking-tight text-gray-900">
           {t('landing.hero.title')}
@@ -90,30 +90,30 @@ export function LandingPage() {
       <section className="mt-14">
         <h2 className="text-base font-semibold text-gray-900">{t('landing.howItWorks.title')}</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
+          <div className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white">
               <UploadIcon className="h-5 w-5" />
             </div>
             <p className="mt-4 text-sm font-semibold text-gray-900">{t('landing.howItWorks.step1')}</p>
-            <p className="mt-2 min-h-[60px] text-sm text-gray-600">
+            <p className="mt-2 min-h-[80px] text-sm text-gray-600">
               {t('landing.howItWorks.step1Body')}
             </p>
           </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
+          <div className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white">
               <RobotIcon className="h-5 w-5" />
             </div>
             <p className="mt-4 text-sm font-semibold text-gray-900">{t('landing.howItWorks.step2')}</p>
-            <p className="mt-2 min-h-[60px] text-sm text-gray-600">
+            <p className="mt-2 min-h-[80px] text-sm text-gray-600">
               {t('landing.howItWorks.step2Body')}
             </p>
           </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
+          <div className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-xs">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white">
               <ChartIcon className="h-5 w-5" />
             </div>
             <p className="mt-4 text-sm font-semibold text-gray-900">{t('landing.howItWorks.step3')}</p>
-            <p className="mt-2 min-h-[60px] text-sm text-gray-600">
+            <p className="mt-2 min-h-[80px] text-sm text-gray-600">
               {t('landing.howItWorks.step3Body')}
             </p>
           </div>

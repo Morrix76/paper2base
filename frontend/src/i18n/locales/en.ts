@@ -128,14 +128,19 @@ export const en = {
       title: 'Turn documents into structured data.',
       subtitle:
         'Upload PDF, Word, Excel, or images — get JSON, Excel, or CSV ready to use',
+      description:
+        'Paper2Base uses AI to read any business document and return structured data, ready for Excel, ERP systems, or automations.',
       cta: 'Start free',
     },
     howItWorks: {
       kicker: 'How it works',
       title: 'How it works',
       step1: 'Upload the document',
+      step1Body: 'PDF, Word, Excel, or a photo — even handwritten',
       step2: 'AI extracts the data',
+      step2Body: 'The model reads the document and identifies the relevant fields',
       step3: 'Download or integrate',
+      step3Body: 'JSON, Excel, CSV, or automatic delivery via webhook',
     },
     formats: {
       kicker: 'Supported formats',

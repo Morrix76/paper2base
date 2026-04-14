@@ -128,14 +128,19 @@ export const it = {
       title: 'Trasforma documenti in dati strutturati.',
       subtitle:
         "Carica PDF, Word, Excel o immagini — ottieni JSON, Excel o CSV pronti all'uso",
+      description:
+        "Paper2Base usa l'intelligenza artificiale per leggere qualsiasi documento aziendale e restituire i dati in formato strutturato, pronto per Excel, gestionali o automazioni.",
       cta: 'Inizia gratis',
     },
     howItWorks: {
       kicker: 'Come funziona',
       title: 'Come funziona',
       step1: 'Carica il documento',
+      step1Body: 'PDF, Word, Excel o foto — anche scritto a mano',
       step2: "L'AI estrae i dati",
+      step2Body: 'Il modello legge il documento e identifica i campi rilevanti',
       step3: 'Scarica o integra',
+      step3Body: 'JSON, Excel, CSV o invio automatico via webhook',
     },
     formats: {
       kicker: 'Formati supportati',

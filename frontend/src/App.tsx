@@ -223,14 +223,16 @@ function App() {
       <main
         className="mx-auto flex min-h-screen max-w-lg flex-col px-6 py-8 pt-16"
       >
-        <header className="py-4 text-center">
-          <h1 className="text-2xl font-black tracking-tight text-gray-900">
-            {t('hero.title')}
-          </h1>
-          <p className="mt-1 text-sm text-gray-400">
-            {t('hero.subtitle')}
-          </p>
-        </header>
+        {!(typeof window !== 'undefined' && !isAuthenticated && window.location.pathname === '/') && (
+          <header className="py-4 text-center">
+            <h1 className="text-2xl font-black tracking-tight text-gray-900">
+              {t('hero.title')}
+            </h1>
+            <p className="mt-1 text-sm text-gray-400">
+              {t('hero.subtitle')}
+            </p>
+          </header>
+        )}
 
         {isPrivacyRoute ? (
           <PrivacyPage />

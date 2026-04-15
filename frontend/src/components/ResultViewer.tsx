@@ -149,7 +149,7 @@ export function ResultViewer({ data, schemaMode = 'default' }: ResultViewerProps
   return (
     <div className="w-full">
       <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)}>
-        <TabsList className="h-auto w-full justify-start gap-6 rounded-none border-b border-gray-100 bg-transparent p-0">
+        <TabsList className="h-auto w-full flex-row justify-start gap-6 rounded-none border-b border-gray-100 bg-transparent p-0">
           <TabsTrigger
             value="table"
             className="rounded-none border-b-2 border-transparent px-0 pb-2 pt-0 text-gray-400 data-[state=active]:border-violet-600 data-[state=active]:text-gray-900 data-[state=active]:shadow-none"

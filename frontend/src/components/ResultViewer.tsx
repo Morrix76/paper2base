@@ -202,7 +202,7 @@ export function ResultViewer({ data, schemaMode = 'default' }: ResultViewerProps
 
         <TabsContent value="json" className="mt-4">
           <pre
-            className="max-h-[min(70vh,520px)] overflow-auto rounded-xl bg-gray-950 p-4 text-xs leading-relaxed text-gray-100 shadow-inner ring-1 ring-gray-900"
+            className="overflow-auto rounded-xl bg-gray-950 p-4 text-xs leading-relaxed text-gray-100 shadow-inner ring-1 ring-gray-900"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </TabsContent>

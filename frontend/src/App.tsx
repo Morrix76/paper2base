@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ActionBar } from './components/ActionBar'
 import { Dropzone } from './components/Dropzone'
@@ -67,6 +67,17 @@ function App() {
   const [useDefaultSchema, setUseDefaultSchema] = useState(true)
   const [customFields, setCustomFields] = useState<CustomFieldRow[]>([])
   const [view, setView] = useState<ViewState>({ status: 'idle' })
+
+  const previewUrl = useMemo(() => {
+    if (!file) return null
+    return URL.createObjectURL(file)
+  }, [file])
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl)
+    }
+  }, [previewUrl])
 
   const handleFileChange = useCallback((next: File | null) => {
     setFile(next)
@@ -283,6 +294,21 @@ function App() {
             </CardHeader>
             <Separator />
             <CardContent className="pt-4">
+              <div className="mb-4 w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                <div className="h-32 w-full">
+                  {previewUrl && file?.type === 'application/pdf' ? (
+                    <iframe
+                      title="PDF preview"
+                      src={previewUrl}
+                      className="h-full w-full"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center px-4 text-sm text-gray-500">
+                      Preview non disponibile per questo formato.
+                    </div>
+                  )}
+                </div>
+              </div>
               <ResultViewer
                 data={view.result.data}
                 schemaMode={view.result.schema_mode ?? 'default'}

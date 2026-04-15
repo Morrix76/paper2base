@@ -221,7 +221,7 @@ function App() {
       )}
 
       <main
-        className="mx-auto flex min-h-screen w-full flex-col px-6 py-8 pt-16"
+        className={`mx-auto flex min-h-screen flex-col px-6 py-8 pt-16 ${success ? 'max-w-4xl' : 'max-w-lg'}`}
       >
         {!(typeof window !== 'undefined' && !isAuthenticated && window.location.pathname === '/') && (
           <header className="py-4 text-center">

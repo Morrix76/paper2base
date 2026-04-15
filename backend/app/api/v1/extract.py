@@ -13,7 +13,7 @@ from app.models.custom_schema import CustomSchema
 from app.services.file_to_content import build_llm_input
 from app.services.file_validation import is_allowed_upload_content_type, validate_upload
 from app.services.llm_extractor import LLMExtractionError, extract_document
-from app.services.webhook_sender import send_webhook
+from app.services.webhook_sender import enqueue_webhook
 
 logger = logging.getLogger(__name__)
 
@@ -137,18 +137,14 @@ async def extract_from_file(
 
     hook = (webhook_url or "").strip()
     if hook:
-
-        async def _dispatch_webhook() -> None:
-            await send_webhook(
-                hook,
-                {
-                    "event": "extraction.completed",
-                    "filename": file.filename,
-                    "data": result_data,
-                },
-            )
-
-        asyncio.create_task(_dispatch_webhook())
+        await enqueue_webhook(
+            hook,
+            {
+                "event": "extraction.completed",
+                "filename": file.filename,
+                "data": result_data,
+            },
+        )
 
     user.credits = max(0, int(user.credits) - 1)
     db.add(user)

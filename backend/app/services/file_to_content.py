@@ -3,6 +3,7 @@ import io
 from dataclasses import dataclass
 from typing import Literal
 
+import fitz
 from docx import Document
 from openpyxl import load_workbook
 
@@ -17,6 +18,36 @@ class LLMInput:
     mode: Literal["vision", "text"]
     image_parts: list[tuple[str, str]] | None = None
     text: str | None = None
+
+
+PDF_TEXT_MEANINGFUL_MIN_CHARS = 300
+
+
+def _pdf_to_text(data: bytes, *, max_pages: int = 10) -> str:
+    """
+    Extract text from a PDF using PyMuPDF.
+    Returns an empty string when text extraction yields nothing useful.
+    """
+    try:
+        doc = fitz.open(stream=data, filetype="pdf")
+    except Exception:
+        return ""
+
+    try:
+        n = min(doc.page_count or 0, max_pages)
+        if n <= 0:
+            return ""
+        chunks: list[str] = []
+        for i in range(n):
+            page = doc.load_page(i)
+            text = (page.get_text("text") or "").strip()
+            if text:
+                chunks.append(text)
+        return "\n\n".join(chunks).strip()
+    except Exception:
+        return ""
+    finally:
+        doc.close()
 
 
 def _docx_to_text(data: bytes) -> str:
@@ -59,6 +90,13 @@ def _xlsx_to_text(data: bytes) -> str:
 
 def build_llm_input(data: bytes, category: FileCategory) -> LLMInput:
     if category == FileCategory.PDF:
+        # Hybrid strategy:
+        # 1) Try native text extraction (cheaper/faster if the PDF contains real text).
+        # 2) Fallback to rasterization + vision for scanned PDFs.
+        text = _pdf_to_text(data)
+        if len(text) >= PDF_TEXT_MEANINGFUL_MIN_CHARS:
+            return LLMInput(mode="text", image_parts=None, text=text)
+
         images_b64 = pdf_bytes_to_png_base64_list(data)
         parts = [(b64, "image/png") for b64 in images_b64]
         return LLMInput(mode="vision", image_parts=parts, text=None)

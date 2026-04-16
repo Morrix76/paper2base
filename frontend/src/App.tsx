@@ -20,6 +20,7 @@ import { RegisterPage } from '@/pages/RegisterPage'
 import { apiUrl } from '@/utils/apiUrl'
 import { PrivacyPage } from '@/pages/PrivacyPage'
 import { LandingPage } from '@/pages/LandingPage'
+import { HistoryPage } from '@/pages/HistoryPage'
 
 type ViewState =
   | { status: 'idle' }
@@ -146,6 +147,7 @@ function App() {
   }
   const isLoginRoute = path === '/login' || path.startsWith('/login/')
   const isRegisterRoute = path === '/register' || path.startsWith('/register/')
+  const isHistoryRoute = path === '/history' || path.startsWith('/history/')
 
   return (
     <div className="relative min-h-screen">
@@ -173,6 +175,13 @@ function App() {
                   {t('nav.creditsDepletedContact')}
                 </a>
               )}
+              <button
+                type="button"
+                onClick={() => (window.location.href = '/history')}
+                className="ml-2 text-sm font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
+              >
+                Cronologia
+              </button>
               <button
                 type="button"
                 onClick={logout}
@@ -266,6 +275,8 @@ function App() {
           ) : (
             <LandingPage />
           )
+        ) : isHistoryRoute ? (
+          <HistoryPage />
         ) : success ? (
           <Card className="w-full rounded-2xl border border-gray-100 shadow-xs">
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

@@ -77,6 +77,38 @@ function buildGenericSheet(t: Translate, data: Record<string, unknown>) {
   return XLSX.utils.aoa_to_sheet(rows)
 }
 
+function buildFullCsv(t: Translate, data: ExtractionData): string {
+  // Sezione riepilogo
+  const riepilogoRows: (string | number)[][] = [
+    [t('export.headers.field'), t('export.headers.value')],
+    ['document_type', data.document_type ?? ''],
+    ['vendor_name', data.vendor_name ?? ''],
+    ['date', data.date ?? ''],
+    ['invoice_number', data.invoice_number ?? ''],
+    ['total_amount', data.total_amount ?? ''],
+    ['tax_amount', data.tax_amount ?? ''],
+  ]
+  const wsRiepilogo = XLSX.utils.aoa_to_sheet(riepilogoRows)
+  const csvRiepilogo = XLSX.utils.sheet_to_csv(wsRiepilogo)
+
+  // Sezione righe
+  const header = [
+    t('result.table.description'),
+    t('result.table.quantity'),
+    t('result.table.unitPrice'),
+  ]
+  const items = data.line_items ?? []
+  const body = items.map((row) => [
+    row.description ?? '',
+    row.quantity ?? '',
+    row.unit_price ?? '',
+  ])
+  const wsRighe = XLSX.utils.aoa_to_sheet([header, ...body])
+  const csvRighe = XLSX.utils.sheet_to_csv(wsRighe)
+
+  return `${csvRiepilogo}\n${t('export.sheets.rows')}\n${csvRighe}`
+}
+
 export function ActionBar({
   data,
   schemaMode = 'default',
@@ -114,11 +146,13 @@ export function ActionBar({
   }, [base, data, schemaMode, t])
 
   const onDownloadCsv = useCallback(() => {
-    const ws =
-      schemaMode === 'custom'
-        ? buildGenericSheet(t, data as Record<string, unknown>)
-        : buildRigheSheet(t, data as ExtractionData)
-    const csv = `\uFEFF${XLSX.utils.sheet_to_csv(ws)}`
+    let csv: string
+    if (schemaMode === 'custom') {
+      const ws = buildGenericSheet(t, data as Record<string, unknown>)
+      csv = `\uFEFF${XLSX.utils.sheet_to_csv(ws)}`
+    } else {
+      csv = `\uFEFF${buildFullCsv(t, data as ExtractionData)}`
+    }
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
     triggerDownload(blob, `${base}.csv`)
   }, [base, data, schemaMode, t])

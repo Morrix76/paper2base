@@ -80,10 +80,7 @@ function App() {
     if (!useDefaultSchema) {
       const valid = customFields.filter((f) => f.name.trim())
       if (valid.length === 0) {
-        setView({
-          status: 'error',
-          message: t('errors.customSchemaNeedsField'),
-        })
+        setView({ status: 'error', message: t('errors.customSchemaNeedsField') })
         return
       }
     }
@@ -99,9 +96,7 @@ function App() {
           JSON.stringify({
             fields: valid.map((f) => ({
               name: f.name.trim(),
-              ...(f.description.trim()
-                ? { description: f.description.trim() }
-                : {}),
+              ...(f.description.trim() ? { description: f.description.trim() } : {}),
               type: f.type,
             })),
           }),
@@ -110,10 +105,7 @@ function App() {
       const { data } = await axios.post<ExtractApiResponse>(
         apiUrl('/api/v1/extract'),
         formData,
-        {
-          timeout: 180_000,
-          headers: { Authorization: `Bearer ${token}` },
-        },
+        { timeout: 180_000, headers: { Authorization: `Bearer ${token}` } },
       )
       setView({ status: 'success', result: data })
       await refreshMe()
@@ -132,19 +124,13 @@ function App() {
   const error = view.status === 'error'
 
   const jsonForActions =
-    view.status === 'success'
-      ? JSON.stringify(view.result.data, null, 2)
-      : ''
+    view.status === 'success' ? JSON.stringify(view.result.data, null, 2) : ''
 
   const isPrivacyRoute =
     typeof window !== 'undefined' &&
-    (window.location.pathname === '/privacy' ||
-      window.location.pathname.startsWith('/privacy/'))
+    (window.location.pathname === '/privacy' || window.location.pathname.startsWith('/privacy/'))
 
   const path = typeof window !== 'undefined' ? window.location.pathname : '/'
-  if (typeof window !== 'undefined') {
-    console.log('CURRENT PATH:', window.location.pathname)
-  }
   const isLoginRoute = path === '/login' || path.startsWith('/login/')
   const isRegisterRoute = path === '/register' || path.startsWith('/register/')
   const isHistoryRoute = path === '/history' || path.startsWith('/history/')
@@ -152,69 +138,75 @@ function App() {
   return (
     <div className="relative min-h-screen">
       <div className="fixed inset-x-0 top-0 z-40 h-14 border-b border-gray-100 bg-white">
-        <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-center px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+        <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+
+          {/* Sinistra: email + crediti */}
+          <div className="flex min-w-0 items-center gap-2 text-sm text-gray-500">
+            {isAuthenticated && user && (
+              <>
+                <span className="hidden truncate font-medium text-gray-900 sm:inline">{user.email}</span>
+                <span className="hidden text-gray-300 sm:inline">·</span>
+                {user.credits > 0 ? (
+                  <span className="hidden text-gray-500 sm:inline">
+                    📄 <span className="font-semibold text-gray-900">{user.credits}</span>{' '}
+                    {t('nav.documentsRemaining')}
+                  </span>
+                ) : (
+                  <a
+                    className="hidden font-medium text-red-600 underline-offset-2 hover:text-red-700 hover:underline sm:inline"
+                    href="mailto:iltuobrand@outlook.it"
+                  >
+                    {t('nav.creditsDepletedContact')}
+                  </a>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Centro: logo */}
+          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2">
             <NavLogoIcon className="h-6 w-6 text-violet-600" />
             <span className="text-2xl font-black text-gray-900">PAPER2BASE</span>
           </div>
-          {isAuthenticated && user && (
-            <div className="absolute left-4 top-1/2 hidden -translate-y-1/2 items-center gap-3 text-sm text-gray-500 sm:flex">
-              <span className="font-medium text-gray-900">{user.email}</span>
-              <span className="text-gray-400">·</span>
-              {user.credits > 0 ? (
-                <span className="text-gray-500">
-                  📄{' '}
-                  <span className="font-semibold text-gray-900">{user.credits}</span>{' '}
-                  {t('nav.documentsRemaining')}
-                </span>
-              ) : (
-                <a
-                  className="font-medium text-red-600 underline-offset-2 hover:text-red-700 hover:underline"
-                  href="mailto:iltuobrand@outlook.it"
+
+          {/* Destra: cronologia | logout | IT EN */}
+          <div className="flex items-center gap-3 text-sm">
+            {isAuthenticated && user && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => (window.location.href = '/history')}
+                  className="font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
                 >
-                  {t('nav.creditsDepletedContact')}
-                </a>
-              )}
-              <button
-                type="button"
-                onClick={() => (window.location.href = '/history')}
-                className="ml-2 text-sm font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
-              >
-                Cronologia
-              </button>
-              <button
-                type="button"
-                onClick={logout}
-                className="ml-2 text-sm font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-          <div className="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-3">
+                  Cronologia
+                </button>
+                <span className="text-gray-300">|</span>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
+                >
+                  Logout
+                </button>
+                <span className="text-gray-300">|</span>
+              </>
+            )}
             <button
               type="button"
               onClick={() => void i18n.changeLanguage('it')}
-              className={
-                i18n.language === 'it'
-                  ? 'text-sm font-bold text-gray-900'
-                  : 'text-sm text-gray-400 hover:text-gray-900'
-              }
+              className={i18n.language === 'it' ? 'font-bold text-gray-900' : 'text-gray-400 hover:text-gray-900'}
             >
               {t('nav.language.it')}
             </button>
             <button
               type="button"
               onClick={() => void i18n.changeLanguage('en')}
-              className={
-                i18n.language === 'en'
-                  ? 'text-sm font-bold text-gray-900'
-                  : 'text-sm text-gray-400 hover:text-gray-900'
-              }
+              className={i18n.language === 'en' ? 'font-bold text-gray-900' : 'text-gray-400 hover:text-gray-900'}
             >
               {t('nav.language.en')}
             </button>
           </div>
+
         </div>
       </div>
 
@@ -229,17 +221,11 @@ function App() {
         </div>
       )}
 
-      <main
-        className={`mx-auto flex min-h-screen flex-col px-6 py-8 pt-16 ${success ? 'max-w-4xl' : 'max-w-lg'}`}
-      >
+      <main className={`mx-auto flex min-h-screen flex-col px-6 py-8 pt-16 ${success ? 'max-w-4xl' : 'max-w-lg'}`}>
         {!(typeof window !== 'undefined' && !isAuthenticated && window.location.pathname === '/') && (
           <header className="py-4 text-center">
-            <h1 className="text-2xl font-black tracking-tight text-gray-900">
-              {t('hero.title')}
-            </h1>
-            <p className="mt-1 text-sm text-gray-400">
-              {t('hero.subtitle')}
-            </p>
+            <h1 className="text-2xl font-black tracking-tight text-gray-900">{t('hero.title')}</h1>
+            <p className="mt-1 text-sm text-gray-400">{t('hero.subtitle')}</p>
           </header>
         )}
 
@@ -252,9 +238,7 @@ function App() {
             isLoadingUser ? (
               <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
                 <CardContent className="py-10">
-                  <div className="flex items-center justify-center">
-                    <Spinner />
-                  </div>
+                  <div className="flex items-center justify-center"><Spinner /></div>
                 </CardContent>
               </Card>
             ) : (
@@ -264,9 +248,7 @@ function App() {
             isLoadingUser ? (
               <Card className="mx-auto w-full rounded-2xl border border-gray-100 shadow-xs">
                 <CardContent className="py-10">
-                  <div className="flex items-center justify-center">
-                    <Spinner />
-                  </div>
+                  <div className="flex items-center justify-center"><Spinner /></div>
                 </CardContent>
               </Card>
             ) : (
@@ -281,9 +263,7 @@ function App() {
           <Card className="w-full rounded-2xl border border-gray-100 shadow-xs">
             <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-                  {t('result.file')}
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('result.file')}</p>
                 <CardTitle className="text-base">
                   {view.result.filename ?? t('result.defaultFilename')}
                 </CardTitle>
@@ -294,10 +274,7 @@ function App() {
             </CardHeader>
             <Separator />
             <CardContent className="pt-4">
-              <ResultViewer
-                data={view.result.data}
-                schemaMode={view.result.schema_mode ?? 'default'}
-              />
+              <ResultViewer data={view.result.data} schemaMode={view.result.schema_mode ?? 'default'} />
             </CardContent>
             <Separator />
             <CardContent className="pt-4">
@@ -316,15 +293,9 @@ function App() {
                 <div className="mb-4">
                   <Dropzone file={file} onFileChange={handleFileChange} disabled={loading} />
                 </div>
-
                 <div className="mb-4 text-left">
-                  <WebhookConfig
-                    value={webhookUrl}
-                    onChange={setWebhookUrl}
-                    disabled={loading}
-                  />
+                  <WebhookConfig value={webhookUrl} onChange={setWebhookUrl} disabled={loading} />
                 </div>
-
                 <div className="mb-4 text-left">
                   <SchemaBuilder
                     useDefaultSchema={useDefaultSchema}
@@ -334,7 +305,6 @@ function App() {
                     disabled={loading}
                   />
                 </div>
-
                 {error && (
                   <div className="mb-4 text-left" role="alert">
                     <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
@@ -343,12 +313,7 @@ function App() {
                         <Button
                           type="button"
                           onClick={extract}
-                          disabled={
-                            !file ||
-                            loading ||
-                            (!useDefaultSchema &&
-                              !customFields.some((f) => f.name.trim()))
-                          }
+                          disabled={!file || loading || (!useDefaultSchema && !customFields.some((f) => f.name.trim()))}
                           variant="destructive"
                         >
                           {t('actions.retry')}
@@ -357,15 +322,10 @@ function App() {
                     </div>
                   </div>
                 )}
-
                 <div className="mb-4">
                   <Button
                     type="button"
-                    disabled={
-                      !file ||
-                      loading ||
-                      (!useDefaultSchema && !customFields.some((f) => f.name.trim()))
-                    }
+                    disabled={!file || loading || (!useDefaultSchema && !customFields.some((f) => f.name.trim()))}
                     onClick={extract}
                     size="lg"
                     className="w-full rounded-lg bg-gray-900 py-3 text-white hover:bg-gray-700"
@@ -381,10 +341,7 @@ function App() {
         <footer className="mt-8 text-center text-sm text-gray-400">
           <div>{t('footer.copyright')}</div>
           <div className="mt-1">
-            <a
-              href="/privacy"
-              className="font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline"
-            >
+            <a href="/privacy" className="font-medium text-gray-500 underline-offset-2 hover:text-gray-900 hover:underline">
               Privacy Policy
             </a>
           </div>

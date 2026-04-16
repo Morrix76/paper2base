@@ -72,7 +72,11 @@ export function HistoryPage() {
         const { data } = await axios.get(apiUrl('/api/v1/history'), {
           headers: { Authorization: `Bearer ${token}` },
         })
-        const items = Array.isArray(data) ? (data as HistoryItem[]) : []
+        const items = Array.isArray(data)
+          ? (data as HistoryItem[])
+          : Array.isArray(data?.items)
+            ? (data.items as HistoryItem[])
+            : []
         if (!cancelled) setView({ status: 'success', items })
       } catch (e) {
         const msg =
@@ -88,11 +92,21 @@ export function HistoryPage() {
   }, [token])
 
   const items = view.status === 'success' ? view.items : []
-
   const empty = useMemo(() => view.status === 'success' && items.length === 0, [view, items.length])
 
   return (
     <div className="w-full">
+      {/* Tasto torna indietro */}
+      <div className="mb-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => (window.location.href = '/')}
+        >
+          ← Torna alla home
+        </Button>
+      </div>
+
       <Card className="w-full rounded-2xl border border-gray-100 shadow-xs">
         <CardHeader>
           <CardTitle className="text-base">Cronologia</CardTitle>
@@ -122,10 +136,7 @@ export function HistoryPage() {
                 const open = expandedKey === key
 
                 return (
-                  <div
-                    key={key}
-                    className="rounded-2xl border border-gray-100 bg-white"
-                  >
+                  <div key={key} className="rounded-2xl border border-gray-100 bg-white">
                     <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
                       <div className="min-w-0">
                         <div className="truncate text-sm font-semibold text-gray-900">
@@ -167,4 +178,3 @@ export function HistoryPage() {
     </div>
   )
 }
-

@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
@@ -25,6 +25,10 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan",
     )
+    extractions: Mapped[list["Extraction"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
 
 
 class VerificationToken(Base):
@@ -37,3 +41,15 @@ class VerificationToken(Base):
 
     user: Mapped[User] = relationship(back_populates="verification_tokens")
 
+
+class Extraction(Base):
+    __tablename__ = "extractions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True, nullable=False)
+    filename: Mapped[str] = mapped_column(String(512), nullable=False)
+    schema_mode: Mapped[str] = mapped_column(String(16), nullable=False, default="default")
+    result_json: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    user: Mapped[User] = relationship(back_populates="extractions")

@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
@@ -8,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.db.database import get_db
-from app.db.models import User
+from app.db.models import Extraction, User
 from app.models.custom_schema import CustomSchema
 from app.services.file_to_content import build_llm_input
 from app.services.file_validation import is_allowed_upload_content_type, validate_upload
@@ -128,11 +129,22 @@ async def extract_from_file(
         ) from e
 
     result_data = extraction.model_dump()
+    schema_mode = "custom" if parsed_custom else "default"
+
+    # Salva nel DB
+    db_extraction = Extraction(
+        user_id=str(user.id),
+        filename=file.filename or "documento",
+        schema_mode=schema_mode,
+        result_json=json.dumps(result_data, ensure_ascii=False),
+    )
+    db.add(db_extraction)
+
     response_body = {
         "success": True,
         "filename": file.filename,
         "data": result_data,
-        "schema_mode": "custom" if parsed_custom else "default",
+        "schema_mode": schema_mode,
     }
 
     hook = (webhook_url or "").strip()
@@ -151,3 +163,33 @@ async def extract_from_file(
     db.commit()
 
     return response_body
+
+
+@router.get(
+    "/history",
+    summary="Get extraction history for current user",
+    status_code=status.HTTP_200_OK,
+)
+async def get_history(
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    limit: int = 20,
+) -> dict:
+    extractions = (
+        db.query(Extraction)
+        .filter(Extraction.user_id == str(user.id))
+        .order_by(Extraction.created_at.desc())
+        .limit(limit)
+        .all()
+    )
+    items = [
+        {
+            "id": e.id,
+            "filename": e.filename,
+            "schema_mode": e.schema_mode,
+            "created_at": e.created_at.isoformat(),
+            "data": json.loads(e.result_json),
+        }
+        for e in extractions
+    ]
+    return {"items": items}

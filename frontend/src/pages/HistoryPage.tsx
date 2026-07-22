@@ -12,6 +12,7 @@ type HistoryItem = {
   filename?: string
   created_at?: string
   extracted_at?: string
+  schema_mode?: 'default' | 'custom'
   data?: Record<string, unknown>
 }
 
@@ -133,6 +134,7 @@ export function HistoryPage() {
                 const docType = getString(data.document_type)
                 const total = formatMoney(data.total_amount)
                 const extractedAt = formatDateTime(it.extracted_at ?? it.created_at)
+                const isCustom = it.schema_mode === 'custom'
                 const open = expandedKey === key
 
                 return (
@@ -142,13 +144,17 @@ export function HistoryPage() {
                         <div className="truncate text-sm font-semibold text-gray-900">
                           {it.filename ?? 'documento'}
                         </div>
-                        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-gray-500">
-                          <span>{docType ?? '—'}</span>
-                          <span className="text-gray-300">·</span>
-                          <span>{extractedAt}</span>
-                          <span className="text-gray-300">·</span>
-                          <span className="font-medium text-gray-900">{total}</span>
-                        </div>
+                        {isCustom ? (
+                          <div className="mt-1 text-sm text-gray-500">{extractedAt}</div>
+                        ) : (
+                          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-gray-500">
+                            <span>{docType ?? '—'}</span>
+                            <span className="text-gray-300">·</span>
+                            <span>{extractedAt}</span>
+                            <span className="text-gray-300">·</span>
+                            <span className="font-medium text-gray-900">{total}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="shrink-0">
                         <Button
@@ -164,7 +170,7 @@ export function HistoryPage() {
                       <>
                         <Separator />
                         <div className="px-4 py-4">
-                          <ResultViewer data={data} schemaMode="default" />
+                          <ResultViewer data={data} schemaMode={it.schema_mode ?? 'default'} />
                         </div>
                       </>
                     )}
